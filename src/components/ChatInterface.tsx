@@ -2,7 +2,6 @@ import React, { useRef, useEffect, useState } from 'react';
 import { useChat } from '../context/ChatContext';
 import ChatMessage from './ChatMessage';
 import MessageInput from './MessageInput';
-import SuggestedQuestions from './SuggestedQuestions';
 import { suggestedQuestions } from '../data/questions';
 import { MessageSquarePlus, Bot, MessagesSquare } from 'lucide-react';
 
@@ -58,7 +57,7 @@ const ChatInterface: React.FC = () => {
       <header className="flex items-center justify-between p-4 border-b shadow-sm bg-white md:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <div className="bg-cyan-600 text-white w-10 h-10 rounded-full flex items-center justify-center">
-            <img src="/amagi.png" alt="Bot Icon" className="w-full h-full object-cover rounded-full" />
+            <img src="/amagi2.png" alt="Bot Icon" className="w-full h-full object-cover rounded-full" />
           </div>
           <div>
             <h1 className="font-semibold text-xl text-gray-900">Amagi</h1>
@@ -67,18 +66,10 @@ const ChatInterface: React.FC = () => {
             </p>
           </div>
         </div>
-        
-        <button
-          onClick={toggleSuggestions}
-          className={`p-2 rounded-full ${showSuggestions ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-700'} hover:bg-blue-100 hover:text-blue-700 transition-colors`}
-          aria-label={language === 'en' ? 'Toggle suggestions' : 'Tampilkan/sembunyikan saran'}
-        >
-          {showSuggestions ? <MessagesSquare size={20} /> : <MessageSquarePlus size={20} />}
-        </button>
       </header>
       
       {/* Chat area with grid layout */}
-      <div className="flex-1 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-0 overflow-hidden">
+      <div className="flex-1 grid gap-0 overflow-hidden">
         {/* Messages section */}
         <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col overflow-hidden">
           {/* Message list */}
@@ -100,7 +91,7 @@ const ChatInterface: React.FC = () => {
                 </div>
                 
                 <div className="flex-1 space-y-2 overflow-hidden">
-                  <div className="font-medium">Lyra</div>
+                  <div className="font-medium">Amagi</div>
                   
                   <div className="prose prose-sm max-w-none prose-blue">
                     {isWaitingForResponse && !isTyping ? (
@@ -146,33 +137,12 @@ const ChatInterface: React.FC = () => {
             />
             <p className="text-xs text-gray-500 mt-2 text-center">
               {language === 'en' 
-                ? 'Lyra.ai by TECH NOVA GROUP' 
-                : 'Lyra.ai by TECH NOVA GROUP'}
+                ? 'AI-generated, for reference only' 
+                : 'AI-generated, for reference only'}
             </p>
           </div>
         </div>
         
-        {/* Suggestions panel - only visible when showSuggestions is true */}
-        {showSuggestions && (
-          <div className="col-span-1 border-l border-gray-200 bg-gray-50 p-4 overflow-y-auto md:block md:p-6">
-            <div className="mb-4">
-              <h2 className="font-medium text-lg text-gray-800">
-                {placeholders.suggestionsTitle[language]}
-              </h2>
-              <p className="text-sm text-gray-500">
-                {language === 'en' 
-                  ? 'Click on any question to get an instant answer' 
-                  : 'Klik pada pertanyaan untuk mendapatkan jawaban instan'}
-              </p>
-            </div>
-            
-            <SuggestedQuestions
-              questions={suggestedQuestions}
-              language={language}
-              onSelectQuestion={selectSuggestedQuestion}
-            />
-          </div>
-        )}
       </div>
     </div>
   );
