@@ -17,3 +17,10 @@ export interface SuggestedQuestion {
   };
   category: 'website' | 'academy' | 'coding';
 }
+
+// Algoritma
+// 1. Levenshtein Distance (untuk typo tolerant)
+// 2. Jaro-Winkler Distance (untuk berperasaan ke inputan pesan)
+// 3. Keyword-based Matching (pencocokan kata kunci di bagian Suggested Questions)
+// 4. NLP Utility: Language Detection (settings basic di english dan indonesia)
+// 5. Prompt Engineering untuk LLM (Prompt-based interaction dengan Google Gemini API)

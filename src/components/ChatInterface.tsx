@@ -58,10 +58,10 @@ const ChatInterface: React.FC = () => {
       <header className="flex items-center justify-between p-4 border-b shadow-sm bg-white md:px-6 lg:px-8">
         <div className="flex items-center gap-3">
           <div className="bg-cyan-600 text-white w-10 h-10 rounded-full flex items-center justify-center">
-            <img src="/icon.jpg" alt="Bot Icon" className="w-full h-full object-cover rounded-full" />
+            <img src="/amagi.png" alt="Bot Icon" className="w-full h-full object-cover rounded-full" />
           </div>
           <div>
-            <h1 className="font-semibold text-xl text-gray-900">Lyra</h1>
+            <h1 className="font-semibold text-xl text-gray-900">Amagi</h1>
             <p className="text-xs font-semibold text-gray-500">
               {language === 'en' ? 'Model Lyra 1.0 Prime' : 'Model Lyra 1.0 Prime'}
             </p>
