@@ -115,7 +115,7 @@ const MessageInput: React.FC<MessageInputProps> = ({
         {/* Character counter (optional) */}
         {message.length > 0 && (
           <div className="absolute bottom-1 right-2 text-xs text-gray-400 dark:text-gray-500">
-            {message.length}/1000
+            {message.length}/500
           </div>
         )}
       </div>

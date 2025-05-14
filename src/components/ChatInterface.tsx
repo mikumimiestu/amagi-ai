@@ -39,7 +39,7 @@ const ChatInterface: React.FC = () => {
 
   const placeholders: Placeholders = {
     input: {
-      en: 'Type your message...',
+      en: 'Ketik pesan kamu...',
       id: 'Ketik pesan Anda...'
     },
     suggestionsTitle: {

@@ -15,17 +15,19 @@ Amigi adalah AI asisten cerdas yang dirancang untuk **membantu kegiatan sehari-h
 - 🎨 **Styling**: TailwindCSS
 - 📡 **Data Source**: Google API dan lainnya
 
-## 🚀 Cara Menjalankan Proyek
+---
 
-```bash
-# 1. Clone repositori ini
-git clone https://github.com/username/amigi.git
-cd amigi
+# 🤖 Perbandingan Lyra vs Amigi
 
-# 2. Install dependencies
-npm install
+| Fitur                | Lyra (Kakak) 👩‍💻                   | Amigi (Adik) 🌸                           |
+| -------------------- | --------------------------------- | ----------------------------------------- |
+| **Fokus Utama**      | Coding, Academy, Edukasi          | Kehidupan sehari-hari, Teman virtual      |
+| **Gaya Komunikasi**  | Profesional, to the point         | Ekspresif, santai, penuh kaomoji (≧◡≦)    |
+| **Model AI**         | Lyra 1.0 Base & Lyra 1.0 Prime    | Lyra 1.0 Base                             |
+| **Platform**         | Web (React TS + TailwindCSS)      | Web (React TS + TailwindCSS)              |
+| **Sumber Data**      | Dataset edukasi, Google, Gemini   | Google, berita, info harian, Lyra         |
+| **Personality**      | Serius, fokus ke produktivitas    | Ceria, suportif, ringan, temani harimu ✨ |
+| **Penggunaan Ideal** | Belajar coding, tanya soal teknis | Curhat, cari info harian, hiburan ringan  |
 
-# 3. Jalankan proyek
-npm run dev
-
-```
+> ⚡ **Lyra** adalah AI untuk belajar dan berkembang di dunia tech.  
+> 🌸 **Amigi** adalah teman virtual yang selalu siap menemani harimu 💬
