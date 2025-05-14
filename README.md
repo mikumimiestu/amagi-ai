@@ -1,6 +1,6 @@
-# 🌸 Amigi — Your Everyday AI Companion (powered by Lyra 1.0 base)
+# 🌸 Amagi — Your Everyday AI Companion (powered by Lyra 1.0 base)
 
-Amigi adalah AI asisten cerdas yang dirancang untuk **membantu kegiatan sehari-hari** kamu dengan gaya yang ekspresif dan menyenangkan! Dibangun di atas model **Lyra 1.0 base**, Amigi memiliki kepribadian lembut dan komunikatif, serta suka menggunakan **kaomoji** (￣ ▽ ￣)ノ ✨ untuk menambah nuansa dalam setiap pesan!
+Amagi adalah AI asisten cerdas yang dirancang untuk **membantu kegiatan sehari-hari** kamu dengan gaya yang ekspresif dan menyenangkan! Dibangun di atas model **Lyra 1.0 base**, Amagi memiliki kepribadian lembut dan komunikatif, serta suka menggunakan **kaomoji** (￣ ▽ ￣)ノ ✨ untuk menambah nuansa dalam setiap pesan!
 
 ## ✨ Fitur Unggulan
 
@@ -17,9 +17,9 @@ Amigi adalah AI asisten cerdas yang dirancang untuk **membantu kegiatan sehari-h
 
 ---
 
-# 🤖 Perbandingan Lyra vs Amigi
+# 🤖 Perbandingan Lyra vs Amagi
 
-| Fitur                | Lyra (Kakak) 👩‍💻                   | Amigi (Adik) 🌸                           |
+| Fitur                | Lyra (Kakak) 👩‍💻                   | Amagi (Adik) 🌸                           |
 | -------------------- | --------------------------------- | ----------------------------------------- |
 | **Fokus Utama**      | Coding, Academy, Edukasi          | Kehidupan sehari-hari, Teman virtual      |
 | **Gaya Komunikasi**  | Profesional, to the point         | Ekspresif, santai, penuh kaomoji (≧◡≦)    |
@@ -30,4 +30,4 @@ Amigi adalah AI asisten cerdas yang dirancang untuk **membantu kegiatan sehari-h
 | **Penggunaan Ideal** | Belajar coding, tanya soal teknis | Curhat, cari info harian, hiburan ringan  |
 
 > ⚡ **Lyra** adalah AI untuk belajar dan berkembang di dunia tech.  
-> 🌸 **Amigi** adalah teman virtual yang selalu siap menemani harimu 💬
+> 🌸 **Amagi** adalah teman virtual yang selalu siap menemani harimu 💬
