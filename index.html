@@ -5,12 +5,35 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/icon2.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Amagi</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Amagi - Powering the Intelligence Behind Lyra</title>
+    <meta name="description" content="[Add a compelling 150-160 character description of what Amagi does or offers]">
+    <meta name="keywords" content="[Add relevant keywords separated by commas]">
+    <meta name="author" content="Amagi">
+    
+    <!-- Open Graph / Facebook Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://amagi.technovagroupinc.com">
+    <meta property="og:title" content="Amagi - Powering the Intelligence Behind Lyra">
+    <meta property="og:description" content="Amagi is an AI research and development division of Tech Nova Group, focused on creating intelligent, ethical, and impactful technologies to empower the future.">
+    <meta property="og:image" content="/icon2.png">
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://amagi.technovagroupinc.com">
+    <meta name="twitter:title" content="Amagi - Powering the Intelligence Behind Lyra">
+    <meta name="twitter:description" content="Amagi is an AI research and development division of Tech Nova Group, focused on creating intelligent, ethical, and impactful technologies to empower the future.">
+    <meta name="twitter:image" content="/icon2.png">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://amagi.technovagroupinc.com" />
 
-    <!-- React -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-scripts@4.0.3/scripts/start.js"></script>
+    <!-- Preload critical resources -->
+    <link rel="preload" href="https://unpkg.com/react@17/umd/react.production.min.js" as="script" crossorigin>
+    <link rel="preload" href="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" as="script" crossorigin>
+
+    <!-- React Production -->
     <script src="https://unpkg.com/react@17/umd/react.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js" crossorigin></script>
     <script src="https://unpkg.com/react-scripts@4.0.3/scripts/build.js"></script>
@@ -18,22 +41,13 @@
     <!-- TypeScript -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typescript/4.9.5/typescript.min.js"></script>
 
-    <!-- React DOM -->
-    <meta name="generator" content="React DOM 18.x">
-    <meta name="framework" content="React DOM">
-    <meta name="language" content="TypeScript">
-    <meta name="db" content="React DOM">
-    <meta name="dbms" content="React DOM">
-    <meta name="generator" content="React Router 6.x">
-    <meta name="framework" content="React Router">
-    <meta name="language" content="TypeScript">
-    <meta name="db" content="React Router">
-
+    <!-- Remove duplicate meta tags and framework information -->
+    <meta name="generator" content="React 17, TypeScript 4.9.5">
+    
     <!-- CLOUD FLARE SCRIPT -->
-    <script src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": ""}'></script>
-    <script src="https://unpkg.com/@cloudflare/analytics@latest/dist/analytics.min.js" data-cf-beacon='{"token": ""}'></script>
-
-    <!-- GOOGLE TAG MANAGER -->
+    <script src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": ""}' defer></script>
+    
+    <!-- GOOGLE TAG MANAGER (with defer) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXX"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -42,8 +56,23 @@
       gtag('config', 'G-XXXXXX');
     </script>
 
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Amagi",
+      "url": "https://amagi.technovagroupinc.com",
+      "logo": "/icon.png",
+      "description": "Amagi is an AI research and development division of Tech Nova Group, focused on creating intelligent, ethical, and impactful technologies to empower the future."
+    }
+    </script>
   </head>
+  
   <body>
+    <noscript>
+      <strong>We're sorry but Amagi doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+    </noscript>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
