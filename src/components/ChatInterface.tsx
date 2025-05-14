@@ -51,7 +51,7 @@ const ChatInterface: React.FC = () => {
       id: 'Memikirkan...'
     },
     typingText: {
-      en: 'Typing...',
+      en: 'Think...',
       id: 'Mengetik...'
     }
   };
