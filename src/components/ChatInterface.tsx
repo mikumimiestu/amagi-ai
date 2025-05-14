@@ -3,7 +3,14 @@ import { useChat } from '../context/ChatContext';
 import ChatMessage from './ChatMessage';
 import MessageInput from './MessageInput';
 import { suggestedQuestions } from '../data/questions';
-import { MessageSquarePlus, Bot, MessagesSquare } from 'lucide-react';
+import { Bot, Sparkles, Sun, Moon } from 'lucide-react';
+
+interface Placeholders {
+  input: Record<string, string>;
+  suggestionsTitle: Record<string, string>;
+  thinkingText: Record<string, string>;
+  typingText: Record<string, string>;
+}
 
 const ChatInterface: React.FC = () => {
   const { 
@@ -18,24 +25,22 @@ const ChatInterface: React.FC = () => {
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
   
-  // Scroll to bottom when messages change
+  // Check user's preferred color scheme
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, isTyping]);
-  
-  // Handle sending message and set waiting state
-  const handleSendMessage = async (message: string) => {
-    setIsWaitingForResponse(true);
-    await sendMessage(message);
-    setIsWaitingForResponse(false);
-  };
+    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    setDarkMode(mediaQuery.matches);
+    
+    const handler = (e: MediaQueryListEvent) => setDarkMode(e.matches);
+    mediaQuery.addEventListener('change', handler);
+    return () => mediaQuery.removeEventListener('change', handler);
+  }, []);
 
-  // Get placeholders based on language
-  const placeholders = {
+  const placeholders: Placeholders = {
     input: {
-      en: 'Type your question here...',
-      id: 'Ketik pertanyaan Anda di sini...'
+      en: 'Type your message...',
+      id: 'Ketik pesan Anda...'
     },
     suggestionsTitle: {
       en: 'Suggested Questions',
@@ -46,103 +51,144 @@ const ChatInterface: React.FC = () => {
       id: 'Memikirkan...'
     },
     typingText: {
-      en: '',
-      id: ''
+      en: 'Typing...',
+      id: 'Mengetik...'
     }
   };
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
   
-  return (
-    <div className="flex flex-col h-screen bg-white">
-      {/* Header */}
-      <header className="flex items-center justify-between p-4 border-b shadow-sm bg-white md:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
-          <div className="bg-cyan-600 text-white w-10 h-10 rounded-full flex items-center justify-center">
-            <img src="/amagi2.png" alt="Bot Icon" className="w-full h-full object-cover rounded-full" />
-          </div>
-          <div>
-            <h1 className="font-semibold text-xl text-gray-900">Amagi</h1>
-            <p className="text-xs font-semibold text-gray-500">
-              {language === 'en' ? 'Model Lyra 1.0 Prime' : 'Model Lyra 1.0 Prime'}
-            </p>
-          </div>
+  const handleSendMessage = async (message: string) => {
+    setIsWaitingForResponse(true);
+    try {
+      await sendMessage(message);
+    } finally {
+      setIsWaitingForResponse(false);
+    }
+  };
+
+  const renderHeader = () => (
+    <header className={`flex items-center justify-between p-4 border-b ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} shadow-sm md:px-6 lg:px-8`}>
+      <div className="flex items-center gap-3">
+        {/* <div className={`${darkMode ? 'bg-purple-600' : 'bg-gradient-to-r from-blue-500 to-purple-600'} text-white w-10 h-10 rounded-full flex items-center justify-center overflow-hidden`}>
+          {darkMode ? (
+            <Moon className="w-5 h-5" />
+          ) : (
+            <Sun className="w-5 h-5" />
+          )}
+        </div> */}
+        <div>
+          <h1 className={`font-semibold text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>Amagi</h1>
+          <p className={`text-xs font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+            by AstByte
+          </p>
         </div>
-      </header>
-      
-      {/* Chat area with grid layout */}
-      <div className="flex-1 grid gap-0 overflow-hidden">
-        {/* Messages section */}
-        <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col overflow-hidden">
-          {/* Message list */}
-          <div className="flex-1 overflow-y-auto divide-y divide-gray-100">
-            {messages.map(message => (
-              <ChatMessage 
-                key={message.id} 
-                message={message}
-                isTyping={isTyping && messages[messages.length - 1].id === message.id}
-                isWaitingForResponse={false} // Tidak digunakan untuk pesan yang sudah ada
-              />
-            ))}
-            
-            {/* Thinking/Typing indicator */}
-            {(isWaitingForResponse || isTyping) && (
-              <div className="flex items-start gap-3 px-4 py-6 bg-gray-50 md:px-6 lg:px-8">
-                <div className="bg-gradient-to-r from-blue-300 to-purple-200 text-white w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-                  Ly
-                </div>
-                
-                <div className="flex-1 space-y-2 overflow-hidden">
-                  <div className="font-medium">Amagi</div>
-                  
-                  <div className="prose prose-sm max-w-none prose-blue">
-                    {isWaitingForResponse && !isTyping ? (
-                      <div className="italic text-gray-500 flex items-center gap-2">
-                        <span className="flex items-center gap-1">
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-pulse"></span>
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
-                          <span className="w-2 h-2 bg-gray-400 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
-                        </span>
-                        {placeholders.thinkingText[language]}
-                      </div>
-                    ) : isTyping && !messages.some(m => m.sender === 'bot' && m.id === 'typing') ? (
-                      <div className="text-gray-500 flex items-center gap-2">
-                        <span className="flex items-center gap-1">
-                          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
-                          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></span>
-                          <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></span>
-                        </span>
-                        {placeholders.typingText[language]}
-                      </div>
-                    ) : null}
-                  </div>
-                </div>
-              </div>
-            )}
-            
-            {messages.length === 0 && !isWaitingForResponse && !isTyping && (
-              <div className="flex items-center justify-center h-full text-gray-400">
-                {language === 'en' ? 'No messages yet' : 'Belum ada pesan'}
-              </div>
-            )}
-            
-            {/* Invisible div for auto-scrolling */}
-            <div ref={messagesEndRef} />
-          </div>
-          
-          {/* Input section */}
-          <div className="p-4 md:p-6">
-            <MessageInput 
-              onSendMessage={handleSendMessage}
-              placeholder={placeholders.input[language]}
-              disabled={isTyping || isWaitingForResponse}
-            />
-            <p className="text-xs text-gray-500 mt-2 text-center">
-              {language === 'en' 
-                ? 'AI-generated, for reference only' 
-                : 'AI-generated, for reference only'}
-            </p>
-          </div>
+      </div>
+      {/* <button 
+        onClick={() => setDarkMode(!darkMode)}
+        className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-100 text-gray-600'}`}
+        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+      >
+        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
+      </button> */}
+    </header>
+  );
+
+  const renderTypingIndicator = () => {
+    const dotAnimation = (
+      <span className="flex items-center gap-1">
+        {[0, 0.2, 0.4].map(delay => (
+          <span 
+            key={delay}
+            className={`w-2 h-2 rounded-full animate-pulse ${
+              isTyping ? (darkMode ? 'bg-purple-400' : 'bg-blue-500') : (darkMode ? 'bg-gray-500' : 'bg-gray-400')
+            }`}
+            style={{ animationDelay: `${delay}s` }}
+          />
+        ))}
+      </span>
+    );
+
+    return (
+      <div className={`flex items-start gap-3 px-4 py-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'} md:px-6 lg:px-8`}>
+        <div className={`${darkMode ? 'bg-purple-600' : 'bg-gradient-to-r from-blue-500 to-purple-600'} text-white w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0`}>
+          <Sparkles size={16} />
         </div>
         
+        <div className="flex-1 space-y-2 overflow-hidden">
+          <div className={`font-medium ${darkMode ? 'text-white' : 'text-gray-900'}`}>Amagi</div>
+          
+          <div className={`prose prose-sm max-w-none ${darkMode ? 'prose-invert' : 'prose-blue'}`}>
+            <div className={`flex items-center gap-2 ${
+              isWaitingForResponse ? 'italic' : ''
+            } ${darkMode ? 'text-gray-300' : 'text-gray-500'}`}>
+              {dotAnimation}
+              {isWaitingForResponse 
+                ? placeholders.thinkingText[language] 
+                : placeholders.typingText[language]}
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderEmptyState = () => (
+    <div className={`flex flex-col items-center justify-center h-full ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+      <Bot className="w-12 h-12 mb-4 opacity-30" />
+      <p>{language === 'en' ? 'Start a conversation with Amagi' : 'Mulai percakapan dengan Amagi'}</p>
+    </div>
+  );
+
+  const renderMessages = () => (
+    <>
+      {messages.map(message => (
+        <ChatMessage 
+          key={message.id} 
+          message={message}
+          isTyping={isTyping && messages[messages.length - 1].id === message.id}
+          isWaitingForResponse={false}
+          darkMode={darkMode}
+        />
+      ))}
+      
+      {(isWaitingForResponse || isTyping) && renderTypingIndicator()}
+      
+      {messages.length === 0 && !isWaitingForResponse && !isTyping && renderEmptyState()}
+      
+      <div ref={messagesEndRef} />
+    </>
+  );
+
+  const renderInputSection = () => (
+    <div className={`p-4 md:p-6 ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
+      <MessageInput 
+        onSendMessage={handleSendMessage}
+        placeholder={placeholders.input[language]}
+        disabled={isTyping || isWaitingForResponse}
+        darkMode={darkMode}
+      />
+      <p className={`text-xs mt-2 text-center ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+        {language === 'en' ? 'AI-powered responses for reference only' : 'Respon AI hanya untuk referensi'}
+      </p>
+    </div>
+  );
+
+  return (
+    <div className={`flex flex-col h-screen ${darkMode ? 'bg-gray-900' : 'bg-white'}`}>
+      {renderHeader()}
+      
+      <div className="flex-1 grid gap-0 overflow-hidden">
+        <div className="col-span-1 md:col-span-2 lg:col-span-3 flex flex-col overflow-hidden">
+          <div className={`flex-1 overflow-y-auto ${darkMode ? 'divide-gray-700' : 'divide-gray-100'} divide-y`}>
+            {renderMessages()}
+          </div>
+          
+          {renderInputSection()}
+        </div>
       </div>
     </div>
   );
