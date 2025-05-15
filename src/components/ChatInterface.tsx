@@ -73,13 +73,6 @@ const ChatInterface: React.FC = () => {
   const renderHeader = () => (
     <header className={`flex items-center justify-between p-4 border-b ${darkMode ? 'bg-gray-900 border-gray-700' : 'bg-white border-gray-200'} shadow-sm md:px-6 lg:px-8`}>
       <div className="flex items-center gap-3">
-        {/* <div className={`${darkMode ? 'bg-purple-600' : 'bg-gradient-to-r from-blue-500 to-purple-600'} text-white w-10 h-10 rounded-full flex items-center justify-center overflow-hidden`}>
-          {darkMode ? (
-            <Moon className="w-5 h-5" />
-          ) : (
-            <Sun className="w-5 h-5" />
-          )}
-        </div> */}
         <div>
           <h1 className={`font-semibold text-xl ${darkMode ? 'text-white' : 'text-gray-900'}`}>Amagi</h1>
           <p className={`text-xs font-semibold ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
@@ -87,13 +80,6 @@ const ChatInterface: React.FC = () => {
           </p>
         </div>
       </div>
-      {/* <button 
-        onClick={() => setDarkMode(!darkMode)}
-        className={`p-2 rounded-full ${darkMode ? 'bg-gray-700 text-yellow-300' : 'bg-gray-100 text-gray-600'}`}
-        aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-      >
-        {darkMode ? <Sun size={18} /> : <Moon size={18} />}
-      </button> */}
     </header>
   );
 

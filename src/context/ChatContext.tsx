@@ -75,8 +75,8 @@ const getGeminiResponse = async (prompt: string, lang: Language): Promise<string
   } catch (error) {
     console.error('Error calling Gemini API:', error);
     return lang === 'en'
-      ? "I apologize, but I'm having trouble generating a response right now. As Amagi AI from Tech Nova Group, I'd be happy to help you with specific questions about our services or programs."
-      : "Maaf, saya sedang mengalami kesulitan menghasilkan respons. Sebagai Amagi AI dari Tech Nova Group, saya dengan senang hati akan membantu Anda dengan pertanyaan spesifik tentang layanan atau program kami.";
+      ? "Server is busy or your token has reached the limit (╥﹏╥)"
+      : "Server sibuk atau token kamu telah mencapai batas (╥﹏╥)";
   }
 };
 
@@ -91,8 +91,8 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const initialMessage: Message = {
       id: generateId(),
       content: language === 'en' 
-        ? "Hai kak! Aku Amagi, apa yang bisa aku bantu hari ini? 😊"
-        : "Halo! Saya Amagi AI, yang diciptakan oleh Tech Nova Group untuk membantu Anda dalam berbagai hal. Apa yang dapat saya bantu hari ini? Jangan ragu untuk mengajukan pertanyaan. 😊",
+        ? "Hai kak! Aku Amagi, apa yang bisa aku bantu hari ini? ˶ᵔ ᵕ ᵔ˶"
+        : "Hai kak! Aku Amagi, apa yang bisa aku bantu hari ini? ˶ᵔ ᵕ ᵔ˶",
       sender: 'bot',
       timestamp: new Date()
     };
@@ -185,16 +185,11 @@ export const ChatProvider: React.FC<{ children: React.ReactNode }> = ({ children
         
         if (relevantAnswer) {
           botResponse = casualTone ? casualizeResponse(relevantAnswer, msgLanguage) : relevantAnswer;
-        } else if (content.toLowerCase().includes('hello') || content.toLowerCase().includes('hi') || 
-                  content.toLowerCase().includes('halo') || content.toLowerCase().includes('hai')) {
-          botResponse = msgLanguage === 'en'
-            ? "Hello! As Amagi AI from Tech Nova Group, I'm here to help you with website development or coding academy questions. What would you like to know?"
-            : "Halo! Sebagai Amagi AI dari Tech Nova Group, saya di sini untuk membantu Anda dengan pertanyaan seputar pengembangan website atau akademi coding. Apa yang ingin Anda ketahui?";
         } else if (content.toLowerCase().includes('thanks') || content.toLowerCase().includes('thank you') ||
                   content.toLowerCase().includes('terima kasih') || content.toLowerCase().includes('makasih')) {
           botResponse = msgLanguage === 'en'
-            ? "You're welcome! As Tech Nova Group's AI assistant, I'm always here to help. Feel free to ask more questions!"
-            : "Sama-sama! Sebagai asisten AI Tech Nova Group, saya selalu siap membantu. Jangan ragu untuk bertanya lagi!";
+            ? "You're welcome! As AI assistant, I'm always here to help. Feel free to ask more questions!"
+            : "Sama-sama! Sebagai asisten AI, saya selalu siap membantu. Jangan ragu untuk bertanya lagi!";
         } else if (isCasualToneRequest(content)) {
           botResponse = msgLanguage === 'en'
             ? "Sure thing! I'll keep my responses more casual and friendly while still representing Tech Nova Group professionally. What would you like to know about our website development or coding academy?"
