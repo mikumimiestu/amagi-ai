@@ -26,6 +26,8 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   const [copied, setCopied] = useState(false);
   const [reaction, setReaction] = useState<'like' | 'dislike' | null>(null);
   const [isHovered, setIsHovered] = useState(false);
+  const [thinkingProgress, setThinkingProgress] = useState(0);
+  const [thinkingDots, setThinkingDots] = useState('');
   const isBot = message.sender === 'bot';
   
   // Enhanced code block extraction with better language detection
@@ -94,25 +96,46 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
     return text;
   };
 
+  // Thinking animation effect
+  useEffect(() => {
+    if (isBot && isTyping) {
+      setShowThinkingMessage(true);
+      
+      const dotInterval = setInterval(() => {
+        setThinkingDots(prev => {
+          if (prev.length >= 3) return '';
+          return prev + '.';
+        });
+      }, 500);
+
+      const progressInterval = setInterval(() => {
+        setThinkingProgress(prev => {
+          if (prev >= 100) return 0;
+          return prev + Math.random() * 10;
+        });
+      }, 200);
+
+      return () => {
+        clearInterval(dotInterval);
+        clearInterval(progressInterval);
+      };
+    } else {
+      setShowThinkingMessage(false);
+      setThinkingProgress(0);
+      setThinkingDots('');
+    }
+  }, [isBot, isTyping]);
+
   // Smooth typing animation effect
   useEffect(() => {
     if (isBot) {
-      setShowThinkingMessage(true);
-
-      const thinkingTimer = setTimeout(() => {
-        setShowThinkingMessage(false);
-      }, 1000);
-
       if (typingIndex < message.content.length) {
         const timer = setTimeout(() => {
           setDisplayedContent(message.content.substring(0, typingIndex + 1));
           setTypingIndex(typingIndex + 1);
         }, isTyping ? Math.random() * 20 + 10 : 0); // Random delay for more natural typing
 
-        return () => {
-          clearTimeout(timer);
-          clearTimeout(thinkingTimer);
-        };
+        return () => clearTimeout(timer);
       }
     }
   }, [isBot, message.content, typingIndex, isTyping]);
@@ -197,11 +220,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
                 target.className = 'hidden';
               }}
             />
-            {/* {!isTyping && (
-              <div className="absolute -bottom-1 -right-1 bg-green-400 rounded-full p-0.5 border-2 border-white dark:border-gray-800">
-                <Sparkles className="w-2.5 h-2.5 text-white" />
-              </div>
-            )} */}
           </div>
         ) : (
           <User className="w-5 h-5" />
@@ -260,15 +278,23 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
         
         <div className={`text-gray-700 dark:text-gray-300 max-w-none space-y-3 transition-all duration-150`}>
-          {/* Thinking indicator with better animation */}
-          {showThinkingMessage && isBot && (
-            <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400 italic">
-              <div className="flex space-x-1.5">
-                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '0ms' }} />
-                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '150ms' }} />
-                <div className="w-2 h-2 rounded-full bg-gray-400 animate-bounce" style={{ animationDelay: '300ms' }} />
+          {/* Enhanced thinking indicator */}
+          {showThinkingMessage && isBot && isTyping && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-gray-500 dark:text-gray-400">
+                <div className="flex space-x-1.5">
+                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{ animationDelay: '0ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{ animationDelay: '150ms' }} />
+                  <div className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" style={{ animationDelay: '300ms' }} />
+                </div>
+                <span>Thinking{thinkingDots}</span>
               </div>
-              Crafting response...
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                <div 
+                  className="bg-blue-500 h-1.5 rounded-full transition-all duration-300" 
+                  style={{ width: `${Math.min(thinkingProgress, 100)}%` }}
+                ></div>
+              </div>
             </div>
           )}
 
@@ -318,7 +344,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
             <span>{new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
             {isBot && (
               <span className="text-[10px] px-1 py-0.5 bg-gray-100 dark:bg-gray-700 rounded">
-                Lyra 1.0 Base
+                Lyra 1.5 Luma
               </span>
             )}
           </div>
