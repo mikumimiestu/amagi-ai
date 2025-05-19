@@ -1,12 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Mic } from 'lucide-react';
+import { Send, Paperclip, Mic, MicOff } from 'lucide-react';
 
 interface MessageInputProps {
   onSendMessage: (message: string) => void;
   placeholder: string;
   disabled?: boolean;
   onAttach?: () => void;
-  onVoice?: () => void;
 }
 
 const MessageInput: React.FC<MessageInputProps> = ({ 
@@ -14,12 +13,82 @@ const MessageInput: React.FC<MessageInputProps> = ({
   placeholder, 
   disabled = false,
   onAttach,
-  onVoice
 }) => {
   const [message, setMessage] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  const [isListening, setIsListening] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
   
+  // Initialize speech recognition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = true;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'en-US';
+
+        recognitionRef.current.onresult = (event) => {
+          let interimTranscript = '';
+          let finalTranscript = '';
+
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              finalTranscript += transcript + ' ';
+            } else {
+              interimTranscript += transcript;
+            }
+          }
+
+          setMessage(prev => {
+            // Remove interim results and add final transcript
+            const cleanedPrev = prev.replace(interimTranscript, '');
+            return cleanedPrev + finalTranscript;
+          });
+        };
+
+        recognitionRef.current.onerror = (event) => {
+          console.error('Speech recognition error', event.error);
+          setIsListening(false);
+        };
+
+        recognitionRef.current.onend = () => {
+          if (isListening) {
+            recognitionRef.current?.start();
+          }
+        };
+      }
+    }
+
+    return () => {
+      if (recognitionRef.current) {
+        recognitionRef.current.stop();
+      }
+    };
+  }, [isListening]);
+
+  const toggleSpeechRecognition = () => {
+    if (!recognitionRef.current) {
+      alert('Speech recognition is not supported in your browser');
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+        setIsListening(true);
+      } catch (error) {
+        console.error('Speech recognition start failed:', error);
+      }
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -63,9 +132,10 @@ const MessageInput: React.FC<MessageInputProps> = ({
     <form 
       onSubmit={handleSubmit} 
       className={`
-        relative flex items-end bg-white dark:bg-gray-800 p-2 rounded-full border-2
+        relative flex items-center bg-white dark:bg-gray-800 p-1 rounded-full border-2
         ${isFocused ? 'border-blue-500 shadow-lg' : 'border-gray-200 dark:border-gray-700 shadow-sm'}
         transition-all duration-300 ease-in-out
+        w-full max-w-md mx-auto
       `}
     >
       {/* Attachment button */}
@@ -82,17 +152,19 @@ const MessageInput: React.FC<MessageInputProps> = ({
       )}
 
       {/* Voice input button */}
-      {onVoice && (
-        <button
-          type="button"
-          onClick={onVoice}
-          disabled={disabled}
-          className="p-2 rounded-full text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors"
-          aria-label="Voice input"
-        >
-          <Mic size={20} />
-        </button>
-      )}
+      <button
+        type="button"
+        onClick={toggleSpeechRecognition}
+        disabled={disabled}
+        className={`p-2 rounded-full transition-colors ${
+          isListening 
+            ? 'text-red-500 bg-red-100 dark:bg-red-900/30 animate-pulse' 
+            : 'text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-gray-700'
+        }`}
+        aria-label={isListening ? "Stop listening" : "Voice input"}
+      >
+        {isListening ? <MicOff size={20} /> : <Mic size={20} />}
+      </button>
 
       <div className="flex-1 relative">
         <textarea
